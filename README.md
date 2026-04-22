@@ -345,3 +345,15 @@ flutter pub outdated
 ---
 
 **Made with ❤️ for Bharat** 🇮🇳
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter installed
+- Firebase CLI installed
+
+### Setup
+```bash
+git clone https://github.com/nishanththiru77/Bias_Mitra.git
+cd Bias_Mitra
+flutter pub get
+firebase login
