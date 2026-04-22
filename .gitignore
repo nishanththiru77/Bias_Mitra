@@ -1,0 +1,171 @@
+# BiasMitra .gitignore
+# Flutter, Dart, and IDE files to exclude from version control
+
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+google-services.json
+GoogleService-Info.plist
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# iOS/macOS
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vscode/*
+**/ios/**/Flutter/Flutter.podspec
+**/ios/**/Flutter/Flutter.framework
+**/ios/**/Flutter/Flutter.modulemap
+**/ios/**/Flutter/GeneratedPluginRegistrant.*
+**/ios/**/flutter/ephemeral/
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner.xcodeproj/project.pbxproj
+**/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme
+**/ios/Runner.xcworkspace/
+
+# Web support: scripts to rm -rf these generated files, and so on.
+.dart_tool/
+.web_symlinks.json
+/lib/generated_plugin_registrant.dart
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/flutter_tester_comparison_goldens/flutter/lib/generated_plugin_registrant.dart
+
+# Windows
+windows/flutter/generated_plugins.cmake
+windows/flutter/generated/
+windows/flutter/ephemeral/
+
+# Linux
+linux/flutter/generated_plugins.cmake
+linux/flutter/generated_plugins.ccache
+linux/flutter/ephemeral/
+
+# Coverage
+coverage/
+
+# Exceptions to above rules.
+!/packages/flutter_tools/test/flutter_tester_comparison_goldens/flutter/lib/generated_plugin_registrant.dart
+
+# Generated files
+lib/generated/
+.dart_tool/build/
+
+# IDE
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Project specific
+firebase_options.dart (before first flutterfire configure)
+lib/config/ (if created)
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependencies
+node_modules/
+pubspec.lock
+
+# Test coverage
+.coverage/
+coverage/
+lcov.info
+
+# Platform-specific files
+.gradle/
+local.properties
+gradlew
+gradlew.bat
+gradle-wrapper.jar
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+*.swp
+*~.nib
+
+# Android Studio
+.idea/
+.gradle
+local.properties
+*.iml
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+.#*
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (removing the slash at the end)
+vendor/
+
+# Cache files
+*.cache
+.cache/
+
+# Keep pubspec.lock during development for reproducible builds
+# Uncomment to track pubspec.lock
+# pubspec.lock
