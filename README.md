@@ -12,7 +12,7 @@ Artificial Intelligence systems used in government schemes often carry implicit 
 - ✅ **Reports** fairness metrics and risk levels
 - ✅ **Mitigates** identified biases through recommendations
 
-**Tagline**: "Unbiased AI for Bharat" 🇮🇳
+**Tagline**: "Unbiased AI for Bharat"
 
 ---
 
@@ -344,7 +344,7 @@ flutter pub outdated
 
 ---
 
-**Made with ❤️ for Bharat** 🇮🇳
+**Made with ❤️ for Bharat**
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -357,3 +357,6 @@ git clone https://github.com/nishanththiru77/Bias_Mitra.git
 cd Bias_Mitra
 flutter pub get
 firebase login
+
+### ▶️ Run
+flutter run
