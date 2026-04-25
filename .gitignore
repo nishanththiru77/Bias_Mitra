@@ -167,3 +167,4 @@ vendor/
 # Uncomment to track pubspec.lock
 # pubspec.lock
 .env
+*.exe
