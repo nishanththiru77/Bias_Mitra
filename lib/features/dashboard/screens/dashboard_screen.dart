@@ -92,6 +92,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Bank Application Note
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(AppConfig.defaultPadding),
+                margin: const EdgeInsets.only(bottom: AppConfig.defaultPadding * 1.5),
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade50,
+                  borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                  border: Border.all(color: Colors.amber.shade300),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.info_outline, color: Colors.orange),
+                    const SizedBox(width: AppConfig.defaultPadding),
+                    Expanded(
+                      child: Text(
+                        'NOTE: Currently, only the Bank Loans feature is activated.',
+                        style: TextStyle(
+                          color: Colors.orange.shade800,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               // Welcome Section
               _buildWelcomeSection(userName),
 

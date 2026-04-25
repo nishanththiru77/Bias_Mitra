@@ -3,6 +3,7 @@
 /// Color Scheme: Saffron (Orange), Green, Blue - Indian Heritage Colors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// App Color Palette - Indian Colors Theme
 class AppColors {
@@ -146,8 +147,8 @@ class AppConfig {
   // API Configuration
   static const String firebaseProjectId = 'bias-mitra-solution-challenge';
   
-  // NOTE: Replace this with your actual Google AI Studio API key!
-  static const String geminiApiKey = 'AIzaSyDvlfWTgK94qxHIjzsTh1Fn6mWGM2gP7ME';
+  // Fetches key securely from .env file
+  static String get geminiApiKey => dotenv.env['GEMINI_API_KEY'] ?? 'YOUR_GEMINI_API_KEY_HERE';
 
   // CSV Processing
   static const int maxFileSize = 10 * 1024 * 1024; // 10MB

@@ -77,10 +77,8 @@ app.*.map.json
 # Web support: scripts to rm -rf these generated files, and so on.
 .dart_tool/
 .web_symlinks.json
-/lib/generated_plugin_registrant.dart
 
 # Exceptions to above rules.
-!/packages/flutter_tools/test/flutter_tester_comparison_goldens/flutter/lib/generated_plugin_registrant.dart
 
 # Windows
 windows/flutter/generated_plugins.cmake
@@ -96,7 +94,6 @@ linux/flutter/ephemeral/
 coverage/
 
 # Exceptions to above rules.
-!/packages/flutter_tools/test/flutter_tester_comparison_goldens/flutter/lib/generated_plugin_registrant.dart
 
 # Generated files
 lib/generated/
@@ -169,3 +166,4 @@ vendor/
 # Keep pubspec.lock during development for reproducible builds
 # Uncomment to track pubspec.lock
 # pubspec.lock
+.env
