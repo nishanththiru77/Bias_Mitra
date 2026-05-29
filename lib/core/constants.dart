@@ -100,6 +100,14 @@ class AppStrings {
   static const String schemeUjjwala = 'Ujjwala Yojana';
   static const String schemeUjjwalaDesc = 'LPG Connection Distribution';
 
+  // Corporate Auditing Modules
+  static const String schemeHiring = 'Hiring Fairness';
+  static const String schemeHiringDesc = 'Resume screening & selection audits';
+  static const String schemePromotion = 'Promotion & Appraisals';
+  static const String schemePromotionDesc = 'Appraisal scores & payroll equity';
+  static const String schemeCredit = 'Private Credit Scoring';
+  static const String schemeCreditDesc = 'Credit limits & private risk models';
+
   // Generic Buttons & Actions
   static const String upload = 'Upload';
   static const String analyze = 'Analyze';

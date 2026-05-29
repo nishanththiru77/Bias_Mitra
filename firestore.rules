@@ -1,0 +1,19 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow users to read/write their own profile
+    match /users/{uid} {
+      allow read, write: if request.auth.uid == uid;
+    }
+
+    // Allow reading fairness models (public data)
+    match /fairness_models/{document=**} {
+      allow read: if request.auth != null;
+    }
+
+    // Allow reading bias detection results
+    match /bias_results/{document=**} {
+      allow read, write: if request.auth.uid == resource.data.user_id;
+    }
+  }
+}

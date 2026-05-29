@@ -168,3 +168,4 @@ vendor/
 # pubspec.lock
 .env
 *.exe
+bias_mitra_submission.zip

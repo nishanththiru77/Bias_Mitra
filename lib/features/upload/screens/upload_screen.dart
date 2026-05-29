@@ -21,12 +21,16 @@ class UploadScreen extends StatefulWidget {
   /// Color index (0-3) used on the dashboard card - keeps brand consistency
   final int schemeIndex;
 
+  /// True when the user is a Corporate Auditor
+  final bool isCorporate;
+
   const UploadScreen({
     Key? key,
     required this.schemeName,
     required this.schemeDescription,
     required this.schemeIcon,
     required this.schemeIndex,
+    this.isCorporate = false,
   }) : super(key: key);
 
   @override
@@ -66,18 +70,25 @@ class _UploadScreenState extends State<UploadScreen>
     super.dispose();
   }
 
-  // ─── Returns the accent color matching the scheme card on dashboard ─────────
+  // ─── Returns the accent color matching the scheme's sector ─────────────────
   Color _schemeAccentColor() {
+    if (widget.isCorporate) {
+      // Corporate palette: emerald green family
+      const List<Color> corpColors = [
+        Color(0xFF065F46), // Hiring  – deep emerald
+        Color(0xFF10B981), // Promotion – bright green
+        Color(0xFF374151), // Credit  – slate
+        Color(0xFF1F2937), // fallback
+      ];
+      return corpColors[widget.schemeIndex % corpColors.length];
+    }
+    // Government palette: blue / green / saffron / purple
     switch (widget.schemeIndex % 4) {
-      case 0:
-        return AppColors.primaryBlue;
-      case 1:
-        return AppColors.secondaryGreen;
-      case 2:
-        return AppColors.accentSaffron;
+      case 0:  return AppColors.primaryBlue;
+      case 1:  return AppColors.secondaryGreen;
+      case 2:  return AppColors.accentSaffron;
       case 3:
-      default:
-        return const Color(0xFF7C3AED); // Purple
+      default: return const Color(0xFF7C3AED);
     }
   }
 
@@ -129,6 +140,7 @@ class _UploadScreenState extends State<UploadScreen>
           schemeName: widget.schemeName,
           schemeIcon: widget.schemeIcon,
           schemeIndex: widget.schemeIndex,
+          isCorporate: widget.isCorporate,
           fileName: _pickedFile!.name,
           fileBytes: _pickedFile!.bytes,
         ),

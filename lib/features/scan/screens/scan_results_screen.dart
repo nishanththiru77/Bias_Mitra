@@ -46,6 +46,9 @@ class ScanResultsScreen extends StatefulWidget {
   /// Raw bytes of the uploaded CSV file for real parsing
   final Uint8List? fileBytes;
 
+  /// True when the audit is for a Corporate/Private module
+  final bool isCorporate;
+
   const ScanResultsScreen({
     Key? key,
     required this.schemeName,
@@ -53,6 +56,7 @@ class ScanResultsScreen extends StatefulWidget {
     required this.schemeIndex,
     required this.fileName,
     this.fileBytes,
+    this.isCorporate = false,
   }) : super(key: key);
 
   @override
@@ -342,12 +346,23 @@ End with one practical fix suggestion. Keep it 5-6 lines max.
     ];
   }
 
-  // ─── Accent color matching the scheme card ────────────────────────────────
+  // ─── Accent color matching the scheme's sector & card ────────────────────
   Color get _accentColor {
+    if (widget.isCorporate) {
+      // Corporate: emerald green family
+      const List<Color> corpColors = [
+        Color(0xFF065F46), // Hiring  – deep emerald
+        Color(0xFF10B981), // Promotions – bright green
+        Color(0xFF374151), // Credit  – slate
+        Color(0xFF1F2937), // fallback
+      ];
+      return corpColors[widget.schemeIndex % corpColors.length];
+    }
+    // Government: blue / green / saffron / purple
     switch (widget.schemeIndex % 4) {
-      case 0: return AppColors.primaryBlue;
-      case 1: return AppColors.secondaryGreen;
-      case 2: return AppColors.accentSaffron;
+      case 0:  return AppColors.primaryBlue;
+      case 1:  return AppColors.secondaryGreen;
+      case 2:  return AppColors.accentSaffron;
       case 3:
       default: return const Color(0xFF7C3AED);
     }
