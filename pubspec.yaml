@@ -48,6 +48,18 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/biasmitra.png"
+  web:
+    generate: true
+    image_path: "assets/biasmitra.png"
+    background_color: "#1E3A8A"
+    theme_color: "#1E3A8A"
+
 
 flutter:
   uses-material-design: true
@@ -55,5 +67,6 @@ flutter:
   # Assets will be added here if needed
   assets:
     - .env
+    - assets/biasmitra.png
 
   # Fonts - Google Fonts handles these automatically

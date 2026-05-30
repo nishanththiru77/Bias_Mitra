@@ -1,11 +1,11 @@
 {
-    "name": "bias_mitra",
-    "short_name": "bias_mitra",
+    "name": "BiasMitra: Unbiased AI for Bharat",
+    "short_name": "BiasMitra",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#1E3A8A",
+    "theme_color": "#1E3A8A",
+    "description": "An AI fairness auditing platform to detect and mitigate bias in government schemes.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

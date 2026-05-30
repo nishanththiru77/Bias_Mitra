@@ -28,7 +28,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // Controllers
   late TextEditingController _nameController;
-  late TextEditingController _idController; // Handles both Officer ID and Employee ID
+  late TextEditingController
+      _idController; // Handles both Officer ID and Employee ID
   late TextEditingController _orgController; // Handles Corporate Company Name
 
   // Selected dropdown properties
@@ -46,7 +47,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     'Ministry of Petroleum & Natural Gas'
   ];
 
-  final List<String> _jurisdictions = ['National', 'State-Level', 'District-Level'];
+  final List<String> _jurisdictions = [
+    'National',
+    'State-Level',
+    'District-Level'
+  ];
 
   final List<String> _states = [
     'Delhi (NCT)',
@@ -81,15 +86,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final profile = authService.currentProfile;
 
     _userType = profile?.userType ?? 'government';
-    _nameController = TextEditingController(text: profile?.name ?? authService.currentUser?.displayName ?? '');
-    _idController = TextEditingController(text: _userType == 'government' ? profile?.officerId : profile?.employeeId);
+    _nameController = TextEditingController(
+        text: profile?.name ?? authService.currentUser?.displayName ?? '');
+    _idController = TextEditingController(
+        text: _userType == 'government'
+            ? profile?.officerId
+            : profile?.employeeId);
     _orgController = TextEditingController(text: profile?.companyName ?? '');
 
-    _selectedMinistry = profile?.ministry.isNotEmpty == true ? profile?.ministry : null;
-    _selectedJurisdiction = profile?.jurisdiction.isNotEmpty == true ? profile?.jurisdiction : 'National';
+    _selectedMinistry =
+        profile?.ministry.isNotEmpty == true ? profile?.ministry : null;
+    _selectedJurisdiction = profile?.jurisdiction.isNotEmpty == true
+        ? profile?.jurisdiction
+        : 'National';
     _selectedState = profile?.state.isNotEmpty == true ? profile?.state : null;
-    _selectedDepartment = profile?.department.isNotEmpty == true ? profile?.department : null;
-    _selectedSector = profile?.industrySector.isNotEmpty == true ? profile?.industrySector : null;
+    _selectedDepartment =
+        profile?.department.isNotEmpty == true ? profile?.department : null;
+    _selectedSector = profile?.industrySector.isNotEmpty == true
+        ? profile?.industrySector
+        : null;
 
     _auditedSchemes = List<String>.from(profile?.auditedSchemes ?? []);
   }
@@ -137,6 +152,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
       final user = authService.currentUser;
       if (user == null) return;
 
+      // Map auditedSchemes to selectedSchemes or selectedModules based on user type
+      List<String> selectedSchemes =
+          _userType == 'government' ? _auditedSchemes : [];
+      List<String> selectedModules =
+          _userType == 'corporate' ? _auditedSchemes : [];
+
       final updatedProfile = GovernmentProfile(
         uid: user.uid,
         email: user.email ?? '',
@@ -145,13 +166,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         isCompleted: true,
         officerId: _userType == 'government' ? _idController.text.trim() : '',
         ministry: _userType == 'government' ? (_selectedMinistry ?? '') : '',
-        jurisdiction: _userType == 'government' ? (_selectedJurisdiction ?? 'National') : '',
-        state: (_userType == 'government' && _selectedJurisdiction != 'National') ? (_selectedState ?? '') : '',
+        jurisdiction: _userType == 'government'
+            ? (_selectedJurisdiction ?? 'National')
+            : '',
+        state:
+            (_userType == 'government' && _selectedJurisdiction != 'National')
+                ? (_selectedState ?? '')
+                : '',
         employeeId: _userType == 'corporate' ? _idController.text.trim() : '',
         companyName: _userType == 'corporate' ? _orgController.text.trim() : '',
         department: _userType == 'corporate' ? (_selectedDepartment ?? '') : '',
         industrySector: _userType == 'corporate' ? (_selectedSector ?? '') : '',
         auditedSchemes: _auditedSchemes,
+        selectedSchemes: selectedSchemes,
+        selectedModules: selectedModules,
       );
 
       await authService.saveUserProfile(updatedProfile);
@@ -190,7 +218,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: AppColors.neutralGrayLighter,
       appBar: AppBar(
         title: Text(
-          widget.isOnboarding ? 'Set Up Your Profile' : 'Official Profile Settings',
+          widget.isOnboarding
+              ? 'Set Up Your Profile'
+              : 'Official Profile Settings',
         ),
         // Hide the back button during onboarding so user can't skip it
         automaticallyImplyLeading: !widget.isOnboarding,
@@ -215,13 +245,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: AppConfig.defaultPadding * 1.5),
 
                 // Messages
-                if (_successMessage != null) _buildAlertCard(AppColors.success, Icons.check_circle_outline, _successMessage!),
-                if (_errorMessage != null) _buildAlertCard(AppColors.error, Icons.error_outline, _errorMessage!),
+                if (_successMessage != null)
+                  _buildAlertCard(AppColors.success, Icons.check_circle_outline,
+                      _successMessage!),
+                if (_errorMessage != null)
+                  _buildAlertCard(
+                      AppColors.error, Icons.error_outline, _errorMessage!),
 
                 const SizedBox(height: AppConfig.defaultPadding),
 
                 // General User Info
-                Text('Auditor Information', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                Text('Auditor Information',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 12),
                 _buildProfileInputs(),
 
@@ -229,14 +267,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 // Scheme Assignments
                 Text(
-                  _userType == 'government' ? 'Assigned Scheme Scopes' : 'Corporate Auditing Scopes',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)
-                ),
+                    _userType == 'government'
+                        ? 'Assigned Scheme Scopes'
+                        : 'Corporate Auditing Scopes',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 4),
-                Text(
-                  'Select the primary modules you are authorized to audit.',
-                  style: TextStyle(color: AppColors.neutralGray, fontSize: 13)
-                ),
+                Text('Select the primary modules you are authorized to audit.',
+                    style:
+                        TextStyle(color: AppColors.neutralGray, fontSize: 13)),
                 const SizedBox(height: 12),
                 _buildSchemeCheckboxes(),
 
@@ -249,16 +290,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _handleSave,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: _userType == 'government' ? AppColors.primaryBlue : AppColors.secondaryGreen,
+                      backgroundColor: _userType == 'government'
+                          ? AppColors.primaryBlue
+                          : AppColors.secondaryGreen,
                       foregroundColor: AppColors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                        borderRadius: BorderRadius.circular(
+                            AppConfig.defaultBorderRadius),
                       ),
                       elevation: 2,
                     ),
                     child: _isLoading
-                        ? const CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(AppColors.white))
-                        : const Text('Verify & Save Profile', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        ? const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(AppColors.white))
+                        : const Text('Verify & Save Profile',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold)),
                   ),
                 ),
                 const SizedBox(height: AppConfig.defaultPadding * 2),
@@ -273,14 +321,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Digital ID Visual Representation Card
   Widget _buildDigitalIDCard() {
     final bool isGov = _userType == 'government';
-    final String orgLabel = isGov ? (_selectedMinistry ?? 'Select Ministry') : (_orgController.text.isNotEmpty ? _orgController.text : 'Select Company');
-    final String idLabel = _idController.text.isNotEmpty ? _idController.text : (isGov ? 'OFFICER ID' : 'EMPLOYEE ID');
-    
+    final String orgLabel = isGov
+        ? (_selectedMinistry ?? 'Select Ministry')
+        : (_orgController.text.isNotEmpty
+            ? _orgController.text
+            : 'Select Company');
+    final String idLabel = _idController.text.isNotEmpty
+        ? _idController.text
+        : (isGov ? 'OFFICER ID' : 'EMPLOYEE ID');
+
     // Dynamic styles
-    final Color topGradient = isGov ? AppColors.primaryBlue : const Color(0xFF27272A);
-    final Color bottomGradient = isGov ? AppColors.accentSaffron : AppColors.secondaryGreen;
+    final Color topGradient =
+        isGov ? AppColors.primaryBlue : const Color(0xFF27272A);
+    final Color bottomGradient =
+        isGov ? AppColors.accentSaffron : AppColors.secondaryGreen;
     final IconData watermarkIcon = isGov ? Icons.balance : Icons.business;
-    final String badgeLabel = isGov ? 'VERIFIED PUBLIC OFFICIAL' : 'VERIFIED PRIVATE AUDITOR';
+    final String badgeLabel =
+        isGov ? 'VERIFIED PUBLIC OFFICIAL' : 'VERIFIED PRIVATE AUDITOR';
 
     return Container(
       width: double.infinity,
@@ -321,7 +378,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   Icon(Icons.gavel, color: AppColors.white, size: 16),
                   SizedBox(width: 4),
-                  Text('GOVT OF INDIA', style: TextStyle(color: AppColors.white, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.2)),
+                  Text('GOVT OF INDIA',
+                      style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1.2)),
                 ],
               ),
             ),
@@ -337,7 +399,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: AppColors.white.withOpacity(0.2),
                         borderRadius: BorderRadius.circular(20),
@@ -345,11 +408,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(Icons.verified, color: AppColors.white, size: 14),
+                          const Icon(Icons.verified,
+                              color: AppColors.white, size: 14),
                           const SizedBox(width: 4),
                           Text(
                             badgeLabel,
-                            style: const TextStyle(color: AppColors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -362,7 +429,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _nameController.text.isNotEmpty ? _nameController.text.toUpperCase() : 'AUDITOR NAME',
+                      _nameController.text.isNotEmpty
+                          ? _nameController.text.toUpperCase()
+                          : 'AUDITOR NAME',
                       style: const TextStyle(
                         color: AppColors.white,
                         fontSize: 20,
@@ -393,11 +462,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Text(
                           'ID NUMBER',
-                          style: TextStyle(color: AppColors.white.withOpacity(0.6), fontSize: 9, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: AppColors.white.withOpacity(0.6),
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
                           idLabel,
-                          style: const TextStyle(color: AppColors.white, fontSize: 14, fontWeight: FontWeight.bold, letterSpacing: 1.5),
+                          style: const TextStyle(
+                              color: AppColors.white,
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 1.5),
                         ),
                       ],
                     ),
@@ -406,11 +482,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Text(
                           'SECURITY CLEARANCE',
-                          style: TextStyle(color: AppColors.white.withOpacity(0.6), fontSize: 9, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: AppColors.white.withOpacity(0.6),
+                              fontSize: 9,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          isGov ? (_selectedJurisdiction == 'National' ? 'L3 - National' : _selectedJurisdiction == 'State-Level' ? 'L2 - Regional' : 'L1 - Local') : 'Enterprise Admin',
-                          style: const TextStyle(color: AppColors.white, fontSize: 13, fontWeight: FontWeight.bold),
+                          isGov
+                              ? (_selectedJurisdiction == 'National'
+                                  ? 'L3 - National'
+                                  : _selectedJurisdiction == 'State-Level'
+                                      ? 'L2 - Regional'
+                                      : 'L1 - Local')
+                              : 'Enterprise Admin',
+                          style: const TextStyle(
+                              color: AppColors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.bold),
                         ),
                       ],
                     ),
@@ -443,19 +531,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _userType == 'government' ? AppColors.primaryBlue : AppColors.white,
+                  color: _userType == 'government'
+                      ? AppColors.primaryBlue
+                      : AppColors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.account_balance, color: _userType == 'government' ? AppColors.white : AppColors.neutralGray, size: 16),
+                      Icon(Icons.account_balance,
+                          color: _userType == 'government'
+                              ? AppColors.white
+                              : AppColors.neutralGray,
+                          size: 16),
                       const SizedBox(width: 8),
                       Text(
                         'Govt Officer',
                         style: TextStyle(
-                          color: _userType == 'government' ? AppColors.white : AppColors.neutralGray,
+                          color: _userType == 'government'
+                              ? AppColors.white
+                              : AppColors.neutralGray,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -474,19 +570,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 decoration: BoxDecoration(
-                  color: _userType == 'corporate' ? AppColors.secondaryGreen : AppColors.white,
+                  color: _userType == 'corporate'
+                      ? AppColors.secondaryGreen
+                      : AppColors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Center(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(Icons.business_center, color: _userType == 'corporate' ? AppColors.white : AppColors.neutralGray, size: 16),
+                      Icon(Icons.business_center,
+                          color: _userType == 'corporate'
+                              ? AppColors.white
+                              : AppColors.neutralGray,
+                          size: 16),
                       const SizedBox(width: 8),
                       Text(
                         'Private Auditor',
                         style: TextStyle(
-                          color: _userType == 'corporate' ? AppColors.white : AppColors.neutralGray,
+                          color: _userType == 'corporate'
+                              ? AppColors.white
+                              : AppColors.neutralGray,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -504,7 +608,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Custom Form Alert Cards
   Widget _buildAlertCard(Color color, IconData icon, String message) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding, vertical: 12),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppConfig.defaultPadding, vertical: 12),
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: color.withOpacity(0.1),
@@ -515,7 +620,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           Icon(icon, color: color),
           const SizedBox(width: 12),
-          Expanded(child: Text(message, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 13))),
+          Expanded(
+              child: Text(message,
+                  style: TextStyle(
+                      color: color,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13))),
         ],
       ),
     );
@@ -531,14 +641,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: AppColors.white,
         borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 8, offset: const Offset(0, 2)),
+          BoxShadow(
+              color: Colors.black.withOpacity(0.02),
+              blurRadius: 8,
+              offset: const Offset(0, 2)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Auditor Full Name
-          Text('Full Name', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+          Text('Full Name',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade700,
+                  fontSize: 13)),
           const SizedBox(height: 6),
           TextFormField(
             controller: _nameController,
@@ -546,25 +663,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
             decoration: const InputDecoration(
               hintText: 'Enter your full name',
               prefixIcon: Icon(Icons.person_outline),
-              contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             ),
-            validator: (val) => val?.isEmpty ?? true ? 'Name is required' : null,
+            validator: (val) =>
+                val?.isEmpty ?? true ? 'Name is required' : null,
           ),
 
           const SizedBox(height: AppConfig.defaultPadding),
 
           // ID Field (Officer ID vs Employee ID)
-          Text(isGov ? 'Government Officer ID' : 'Employee ID', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+          Text(isGov ? 'Government Officer ID' : 'Employee ID',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey.shade700,
+                  fontSize: 13)),
           const SizedBox(height: 6),
           TextFormField(
             controller: _idController,
             onChanged: (_) => setState(() {}),
             decoration: InputDecoration(
               hintText: isGov ? 'e.g. GOV-NIC-2026-098' : 'e.g. EMP-TECH-4402',
-              prefixIcon: Icon(isGov ? Icons.fingerprint : Icons.badge_outlined),
-              contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              prefixIcon:
+                  Icon(isGov ? Icons.fingerprint : Icons.badge_outlined),
+              contentPadding:
+                  const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             ),
-            validator: (val) => val?.isEmpty ?? true ? 'Identification ID is required' : null,
+            validator: (val) =>
+                val?.isEmpty ?? true ? 'Identification ID is required' : null,
           ),
 
           const SizedBox(height: AppConfig.defaultPadding),
@@ -572,24 +698,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Government Specific Options
           if (isGov) ...[
             // Ministry Select
-            Text('Responsible Ministry', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+            Text('Responsible Ministry',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade700,
+                    fontSize: 13)),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedMinistry,
               hint: const Text('Select your Ministry'),
-              items: _ministries.map((m) => DropdownMenuItem(value: m, child: Text(m, overflow: TextOverflow.ellipsis))).toList(),
+              items: _ministries
+                  .map((m) => DropdownMenuItem(
+                      value: m,
+                      child: Text(m, overflow: TextOverflow.ellipsis)))
+                  .toList(),
               onChanged: (val) => setState(() => _selectedMinistry = val),
-              validator: (val) => val == null ? 'Please choose your ministry' : null,
+              validator: (val) =>
+                  val == null ? 'Please choose your ministry' : null,
             ),
 
             const SizedBox(height: AppConfig.defaultPadding),
 
             // Jurisdiction Level
-            Text('Jurisdiction Area', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+            Text('Jurisdiction Area',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade700,
+                    fontSize: 13)),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedJurisdiction,
-              items: _jurisdictions.map((j) => DropdownMenuItem(value: j, child: Text(j))).toList(),
+              items: _jurisdictions
+                  .map((j) => DropdownMenuItem(value: j, child: Text(j)))
+                  .toList(),
               onChanged: (val) => setState(() {
                 _selectedJurisdiction = val;
                 if (val == 'National') {
@@ -601,20 +742,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
             // State Select (Only if local or regional)
             if (_selectedJurisdiction != 'National') ...[
               const SizedBox(height: AppConfig.defaultPadding),
-              Text('State / UT', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+              Text('State / UT',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey.shade700,
+                      fontSize: 13)),
               const SizedBox(height: 6),
               DropdownButtonFormField<String>(
                 value: _selectedState,
                 hint: const Text('Select State'),
-                items: _states.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+                items: _states
+                    .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                    .toList(),
                 onChanged: (val) => setState(() => _selectedState = val),
-                validator: (val) => val == null ? 'Please choose your state' : null,
+                validator: (val) =>
+                    val == null ? 'Please choose your state' : null,
               ),
             ],
           ] else ...[
             // Corporate Specific Options
             // Corporate Company Name
-            Text('Company / Corporate Name', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+            Text('Company / Corporate Name',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade700,
+                    fontSize: 13)),
             const SizedBox(height: 6),
             TextFormField(
               controller: _orgController,
@@ -622,35 +774,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
               decoration: const InputDecoration(
                 hintText: 'e.g. Infosys, ICICI Bank, Tata Group',
                 prefixIcon: Icon(Icons.business),
-                contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 12, horizontal: 16),
               ),
-              validator: (val) => val?.isEmpty ?? true ? 'Company name is required' : null,
+              validator: (val) =>
+                  val?.isEmpty ?? true ? 'Company name is required' : null,
             ),
 
             const SizedBox(height: AppConfig.defaultPadding),
 
             // Corporate Department
-            Text('Corporate Department', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+            Text('Corporate Department',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade700,
+                    fontSize: 13)),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedDepartment,
               hint: const Text('Select Department'),
-              items: _departments.map((d) => DropdownMenuItem(value: d, child: Text(d))).toList(),
+              items: _departments
+                  .map((d) => DropdownMenuItem(value: d, child: Text(d)))
+                  .toList(),
               onChanged: (val) => setState(() => _selectedDepartment = val),
-              validator: (val) => val == null ? 'Please choose your department' : null,
+              validator: (val) =>
+                  val == null ? 'Please choose your department' : null,
             ),
 
             const SizedBox(height: AppConfig.defaultPadding),
 
             // Industry Sector
-            Text('Enterprise Industry Sector', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 13)),
+            Text('Enterprise Industry Sector',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey.shade700,
+                    fontSize: 13)),
             const SizedBox(height: 6),
             DropdownButtonFormField<String>(
               value: _selectedSector,
               hint: const Text('Select Sector'),
-              items: _sectors.map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
+              items: _sectors
+                  .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                  .toList(),
               onChanged: (val) => setState(() => _selectedSector = val),
-              validator: (val) => val == null ? 'Please choose your industry sector' : null,
+              validator: (val) =>
+                  val == null ? 'Please choose your industry sector' : null,
             ),
           ],
         ],
@@ -664,15 +832,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     final List<Map<String, String>> schemes = isGov
         ? [
-            {'id': AppStrings.schemePMKisan, 'title': AppStrings.schemePMKisan, 'desc': AppStrings.schemePMKisanDesc},
-            {'id': AppStrings.schemeScholarships, 'title': AppStrings.schemeScholarships, 'desc': AppStrings.schemeScholarshipsDesc},
-            {'id': AppStrings.schemeBankLoans, 'title': AppStrings.schemeBankLoans, 'desc': AppStrings.schemeBankLoansDesc},
-            {'id': AppStrings.schemeUjjwala, 'title': AppStrings.schemeUjjwala, 'desc': AppStrings.schemeUjjwalaDesc},
+            {
+              'id': AppStrings.schemePMKisan,
+              'title': AppStrings.schemePMKisan,
+              'desc': AppStrings.schemePMKisanDesc
+            },
+            {
+              'id': AppStrings.schemeScholarships,
+              'title': AppStrings.schemeScholarships,
+              'desc': AppStrings.schemeScholarshipsDesc
+            },
+            {
+              'id': AppStrings.schemeBankLoans,
+              'title': AppStrings.schemeBankLoans,
+              'desc': AppStrings.schemeBankLoansDesc
+            },
+            {
+              'id': AppStrings.schemeUjjwala,
+              'title': AppStrings.schemeUjjwala,
+              'desc': AppStrings.schemeUjjwalaDesc
+            },
           ]
         : [
-            {'id': AppStrings.schemeHiring, 'title': AppStrings.schemeHiring, 'desc': AppStrings.schemeHiringDesc},
-            {'id': AppStrings.schemePromotion, 'title': AppStrings.schemePromotion, 'desc': AppStrings.schemePromotionDesc},
-            {'id': AppStrings.schemeCredit, 'title': AppStrings.schemeCredit, 'desc': AppStrings.schemeCreditDesc},
+            {
+              'id': AppStrings.schemeHiring,
+              'title': AppStrings.schemeHiring,
+              'desc': AppStrings.schemeHiringDesc
+            },
+            {
+              'id': AppStrings.schemePromotion,
+              'title': AppStrings.schemePromotion,
+              'desc': AppStrings.schemePromotionDesc
+            },
+            {
+              'id': AppStrings.schemeCredit,
+              'title': AppStrings.schemeCredit,
+              'desc': AppStrings.schemeCreditDesc
+            },
           ];
 
     return Column(
@@ -685,14 +881,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return Card(
           margin: const EdgeInsets.only(bottom: 10),
           color: AppColors.white,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           child: CheckboxListTile(
             value: isChecked,
             onChanged: (_) => _toggleScheme(id),
-            title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(desc, style: const TextStyle(fontSize: 12, color: AppColors.neutralGray)),
-            activeColor: isGov ? AppColors.primaryBlue : AppColors.secondaryGreen,
-            checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            title: Text(title,
+                style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(desc,
+                style: const TextStyle(
+                    fontSize: 12, color: AppColors.neutralGray)),
+            activeColor:
+                isGov ? AppColors.primaryBlue : AppColors.secondaryGreen,
+            checkboxShape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
             controlAffinity: ListTileControlAffinity.trailing,
           ),
         );

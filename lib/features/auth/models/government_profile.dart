@@ -22,6 +22,12 @@ class GovernmentProfile {
   // Audit configuration
   final List<String> auditedSchemes;
 
+  // Dynamic module/scheme visibility based on user selection
+  final List<String>
+      selectedSchemes; // For Government Auditors (PM-KISAN, Scholarships, etc.)
+  final List<String>
+      selectedModules; // For Corporate Auditors (Hiring, Promotion, Credit)
+
   GovernmentProfile({
     required this.uid,
     required this.email,
@@ -37,10 +43,13 @@ class GovernmentProfile {
     this.department = '',
     this.industrySector = '',
     required this.auditedSchemes,
+    this.selectedSchemes = const [],
+    this.selectedModules = const [],
   });
 
   /// Factory constructor to create a profile from Firestore map
-  factory GovernmentProfile.fromMap(Map<String, dynamic> map, String uid, String email, String fallbackName) {
+  factory GovernmentProfile.fromMap(
+      Map<String, dynamic> map, String uid, String email, String fallbackName) {
     return GovernmentProfile(
       uid: uid,
       email: email,
@@ -56,6 +65,8 @@ class GovernmentProfile {
       department: map['department'] ?? '',
       industrySector: map['industrySector'] ?? '',
       auditedSchemes: List<String>.from(map['auditedSchemes'] ?? []),
+      selectedSchemes: List<String>.from(map['selectedSchemes'] ?? []),
+      selectedModules: List<String>.from(map['selectedModules'] ?? []),
     );
   }
 
@@ -86,6 +97,8 @@ class GovernmentProfile {
       'department': department,
       'industrySector': industrySector,
       'auditedSchemes': auditedSchemes,
+      'selectedSchemes': selectedSchemes,
+      'selectedModules': selectedModules,
     };
   }
 
@@ -103,7 +116,8 @@ class GovernmentProfile {
       }
     } else {
       if (companyName.isEmpty) return 'No Clearance';
-      if (department.toLowerCase().contains('hr') || department.toLowerCase().contains('hiring')) {
+      if (department.toLowerCase().contains('hr') ||
+          department.toLowerCase().contains('hiring')) {
         return 'Enterprise HR Validator';
       }
       return 'Standard Corporate Auditor';

@@ -58,19 +58,19 @@ class _SchemeCardState extends State<SchemeCard>
     if (widget.isCorporate) {
       // Corporate: slate → emerald green family
       final List<List<Color>> corpPalette = [
-        [const Color(0xFF1F2937), AppColors.secondaryGreen],          // Hiring
-        [const Color(0xFF065F46), const Color(0xFF10B981)],           // Promotions
-        [const Color(0xFF374151), const Color(0xFF6EE7B7)],           // Credit
-        [const Color(0xFF1E293B), const Color(0xFF34D399)],           // fallback
+        [const Color(0xFF1F2937), AppColors.secondaryGreen], // Hiring
+        [const Color(0xFF065F46), const Color(0xFF10B981)], // Promotions
+        [const Color(0xFF374151), const Color(0xFF6EE7B7)], // Credit
+        [const Color(0xFF1E293B), const Color(0xFF34D399)], // fallback
       ];
       return corpPalette[widget.index % corpPalette.length];
     } else {
       // Government: blue → saffron family
       final List<List<Color>> govPalette = [
-        [AppColors.primaryBlue, AppColors.primaryBlueLight],          // PM-KISAN
-        [const Color(0xFF065F46), AppColors.secondaryGreen],          // Scholarships
-        [AppColors.accentSaffron, const Color(0xFFFF9F6B)],           // Bank Loans
-        [const Color(0xFF7C3AED), const Color(0xFFA78BFA)],           // Ujjwala
+        [AppColors.primaryBlue, AppColors.primaryBlueLight], // PM-KISAN
+        [const Color(0xFF065F46), AppColors.secondaryGreen], // Scholarships
+        [AppColors.accentSaffron, const Color(0xFFFF9F6B)], // Bank Loans
+        [const Color(0xFF7C3AED), const Color(0xFFA78BFA)], // Ujjwala
       ];
       return govPalette[widget.index % govPalette.length];
     }
@@ -119,7 +119,8 @@ class _SchemeCardState extends State<SchemeCard>
           child: Padding(
             padding: const EdgeInsets.all(18),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // ── Icon bubble ──────────────────────────────────────────────
@@ -140,38 +141,42 @@ class _SchemeCardState extends State<SchemeCard>
                 const SizedBox(height: 14),
 
                 // ── Title ────────────────────────────────────────────────────
-                Text(
-                  widget.title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    letterSpacing: 0.2,
+                Flexible(
+                  child: Text(
+                    widget.title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 0.2,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
 
                 const SizedBox(height: 6),
 
                 // ── Subtitle ─────────────────────────────────────────────────
-                Text(
-                  widget.subtitle,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.white.withOpacity(0.78),
-                    height: 1.35,
+                Flexible(
+                  child: Text(
+                    widget.subtitle,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white.withOpacity(0.78),
+                      height: 1.35,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
 
-                const Spacer(),
+                const SizedBox(height: 12),
 
                 // ── Audit CTA chip ────────────────────────────────────────────
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: Colors.white.withOpacity(0.22),
                     borderRadius: BorderRadius.circular(20),
@@ -181,12 +186,16 @@ class _SchemeCardState extends State<SchemeCard>
                     children: [
                       const Icon(Icons.search, color: Colors.white, size: 12),
                       const SizedBox(width: 4),
-                      Text(
-                        widget.isCorporate ? 'Audit Now' : 'Run Audit',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w600,
+                      Flexible(
+                        child: Text(
+                          widget.isCorporate ? 'Audit Now' : 'Run Audit',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

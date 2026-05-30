@@ -188,11 +188,10 @@ class AppTheme {
       ),
 
       // Card Theme
-      cardTheme: CardTheme(
-        color: AppColors.white,
+      cardTheme: CardThemeData(
         elevation: 2,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+          borderRadius: BorderRadius.circular(16),
         ),
       ),
 
